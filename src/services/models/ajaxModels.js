@@ -3,8 +3,6 @@
 import Config from 'app.config';
 
 // Error response abstractions
-const parseApplicationMessage = Symbol('parseApplicationMessage');
-
 export class AjaxError {
 
   static from = ajaxError => new AjaxError(ajaxError);
@@ -24,21 +22,7 @@ export class AjaxError {
     // For general application errors, figure out a more detailed message if possible.
     // In dotNet, the ExceptionMessage may contain JSON that can be further parsed.
     if (this.status >= 500 && this.errorMessage) {
-      this[parseApplicationMessage](((JSON.parse(this.errorMessage) || {}).Message) || this.errorMessage);
-    }
-  }
-
-  /**
-   * Parse the message for known error codes
-   */
-  [parseApplicationMessage](message) {
-    if (message) {
-      this.errorMessage = message;
-
-      // TODO: Add other error codes that we care about
-      if (message.includes('ThrottlingMaxActiveJobCountExceeded')) {
-        this.errorCode = 'maxJobCountExceeded';
-      }
+      this.errorMessage = ((JSON.parse(this.errorMessage) || {}).Message) || this.errorMessage;
     }
   }
 
@@ -54,8 +38,6 @@ export class AjaxError {
       return 'errorCode.notAuthorized';
     } else if (this.status === 404) { // Endpoint not found
       return 'errorCode.notFound';
-    } else if (this.status === 429) { // Max Active Job Count Exceeded
-      return 'errorCode.maxJobCountExceeded';
     } else if (this.status >= 300 && this.status < 400) { // Redirection
       return 'errorCode.redirection';
     } else if (Config.retryableStatusCodes.has(this.status)) {

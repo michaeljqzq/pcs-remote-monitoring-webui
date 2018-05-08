@@ -16,7 +16,6 @@
   },
   "errorFormat": "Error: {{message}}",
   "errorCode": {
-    "maxJobCountExceeded": "We were not able to create the job because the maximum job count has been exceeded.",
     "noResponse": "Oops, there was no response from the server.",
     "notLoggedIn": "You need to login to call the service.",
     "notAuthorized": "You are not authorized to call the service.",
