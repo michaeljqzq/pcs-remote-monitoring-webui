@@ -116,7 +116,7 @@ export class Link extends Validator {
   get value() {
     // In case the user defaults a value to be undefined, always default to the empty string
     // to prevent switching between a controlled and uncontrolled input
-    const val = this.selector(this.component.state); isDef
+    const val = this.selector(this.component.state);
     return isDef(val) ? val : '';
   }
 
