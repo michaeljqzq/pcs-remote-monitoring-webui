@@ -3,7 +3,7 @@
 import { Component } from 'react';
 import update from 'immutability-helper';
 
-import { isFunc } from 'utilities';
+import { isFunc, isDef } from 'utilities';
 
 /** Contains logic for validating a value */
 export class Validator {
@@ -116,7 +116,8 @@ export class Link extends Validator {
   get value() {
     // In case the user defaults a value to be undefined, always default to the empty string
     // to prevent switching between a controlled and uncontrolled input
-    return this.selector(this.component.state) || '';
+    const val = this.selector(this.component.state); isDef
+    return isDef(val) ? val : '';
   }
 
   get error() {
